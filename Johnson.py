@@ -4,11 +4,11 @@ from gen_graph import *
 import fibonacci_heap_mod as fhp
 
 #test_graph = gen_adjacent_matrix( 4 , 7 , -1 , 10 )
-test_graph = np.array([[np.inf , 7      , 3      , np.inf , np.inf ],
-                       [np.inf , np.inf , np.inf , 5      , 3      ], 
-                       [np.inf , 2      , np.inf , np.inf , np.inf ], 
-                       [np.inf , np.inf , 1      , np.inf , np.inf ], 
-                       [np.inf , np.inf , np.inf , 1      , np.inf ] ])
+#test_graph = np.array([[np.inf , 7      , 3      , np.inf , np.inf ],
+#                       [np.inf , np.inf , np.inf , 5      , 3      ], 
+#                       [np.inf , 2      , np.inf , np.inf , np.inf ], 
+#                       [np.inf , np.inf , 1      , np.inf , np.inf ], 
+#                       [np.inf , np.inf , np.inf , 1      , np.inf ] ])
 
 #print test_graph
 
@@ -20,20 +20,21 @@ def Bellman_Ford( graph , E , s ):
     v = len(graph)
     dist = np.zeros(v)
     #preV = np.zeros(v)
-
-    for i in dist:
-        i = np.inf
     dist[s] = 0 
     #for i in preV:
     #    i = np.NaN
-
+    change = True ; 
     # v-1 iterations
     for i in range(v):
         # for each edge
+        change = False
         #print dist
         for edge in E:
             if dist[edge[0]] + graph[edge[0]][edge[1]] < dist[edge[1]]:
                 dist[edge[1]] = dist[edge[0]] + graph[edge[0]][edge[1]]
+                change = True 
+        if change == False: 
+            break 
         '''
         for r in range(v):
             for c in range(v-1):
@@ -58,13 +59,17 @@ def Bellman_Ford( graph , E , s ):
     #print " Bellman result \n" , dist
     return dist
 
-def update_graph( graph , h ):
-    v = len(graph)
+def update_graph( graph , E , h ):
+    #v = len(graph)
+    for edge in E:
+        graph[edge[0]][edge[1]] = graph[edge[0]][edge[1]] + h[edge[0]] - h[edge[1]]
+    '''
     for r in range(v):
         for c in range(v):
             if graph[r][c] <= np.inf:
                 graph[r][c] = graph[r][c] + h[r] - h[c]
-
+    '''
+    '''
 def extract_min( Q , dist ):
     rest = dist[Q[0]]
     idx = Q[0] 
@@ -74,8 +79,8 @@ def extract_min( Q , dist ):
             idx = i 
     Q.remove(idx)
     return idx
-
-def Dijkstra( graph , s ):
+'''
+def Dijkstra( graph , s , V ):
     #init
     v = len(graph)
     dist = np.zeros(v)
@@ -101,6 +106,12 @@ def Dijkstra( graph , s ):
         r = r_FHeap.m_elem
         #S = S + [ r ]
         
+        for c in V[r]:
+            if dist[r] + graph[r][c] < dist[c]:
+                dist[c] = dist[r] + graph[r][c]
+                Q_FHeap.decrease_key( Entry_list[c] , dist[c] )
+                
+        '''
         for c in range(v):
             if graph[r][c] < np.inf:
                 if dist[r] + graph[r][c] < dist[c]:
@@ -108,22 +119,23 @@ def Dijkstra( graph , s ):
                     #print Entry_list[c].m_elem , ", ", Entry_list[c].m_priority, ", " , dist[c]
                     Q_FHeap.decrease_key( Entry_list[c] , dist[c] )
     #                prev[c] = r
-            
+        ''' 
     return dist 
 
 
-def Dijkstra_all( graph ): 
+def Dijkstra_all( graph , V): 
     v = len(graph)
     # for all vertice 
-    output = Dijkstra( graph , 0 )
-    for i in range(1,v):
-        h = Dijkstra( graph , i )
+    output = Dijkstra( graph , 0 ,V)
+    for i in range(1,v): 
+        h = Dijkstra( graph , i , V)
         output = np.vstack([ output , h ])
         #o_prev = np.vstack([ o_prev , prev ])
     return output 
 
-def Johnson( graph , E ):
+def Johnson( graph , E , V):
     v = len(graph)
+    e = len(E)
     node_p = v * [ 0 ]
     for i in range(v):
         E = E + [ ( v , i ) ]
@@ -132,15 +144,15 @@ def Johnson( graph , E ):
     h = Bellman_Ford ( graph , E , v ) 
     #print " h = \n" , h
     ud_graph = np.delete( graph , v , 0 )
-    graph = np.delete( graph , 0 , 0 )
     #print " delete \n" , graph
     #print "before update \n" , ud_graph
-    update_graph ( ud_graph , h )
+    E = E[:e]
+    update_graph ( ud_graph , E , h )
     #print " update \n" , ud_graph
-    dist = Dijkstra_all( ud_graph )
+    dist = Dijkstra_all( ud_graph , V)
     #print " dist \n" , dist
     #print " h =  \n" , h 
-    update_graph ( dist , -h )
+    update_graph ( dist , E , -h )
     #print "\n"
     return dist
 #print Johnson(test_graph) 

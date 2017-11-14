@@ -3,12 +3,13 @@
 from gen_graph import *
 
 #test_graph = gen_adjacent_matrix( 4 , 7 , -1 , 10 )
+'''
 test_graph = np.array([[np.inf , 7      , 3      , np.inf , np.inf ],
                        [np.inf , np.inf , np.inf , 5      , 3      ], 
                        [np.inf , 2      , np.inf , np.inf , np.inf ], 
                        [np.inf , np.inf , 1      , np.inf , np.inf ], 
                        [np.inf , np.inf , np.inf , 1      , np.inf ] ])
-
+'''
 #print test_graph
 
 

@@ -27,7 +27,14 @@ def gen_adjacent_matrix( n_vertice , n_edges , min_w , max_w ):
     for r in range(n_vertice):
         for c in range(n_vertice):
             if graph[r][c] < np.inf:
-                E = E + [ (r,c) ]     
-    return graph , E
+                E = E + [ (r,c) ]  
+    V = [] 
+    for r in range(n_vertice):
+        vertex_edge =  []  
+        for c in range(n_vertice):
+            if graph[r][c] < np.inf:
+                vertex_edge = vertex_edge + [ c ]  
+        V = V + [ vertex_edge ]
+    return graph , E, V
 
 #a = gen_adjacent_matrix( 4 , 7 , -10 , 10)
