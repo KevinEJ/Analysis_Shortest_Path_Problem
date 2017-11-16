@@ -23,18 +23,18 @@ def Bellman_Ford( graph , E , s ):
     dist[s] = 0 
     #for i in preV:
     #    i = np.NaN
-    change = True ; 
+    #change = True ; 
     # v-1 iterations
     for i in range(v):
         # for each edge
-        change = False
+        #change = False
         #print dist
         for edge in E:
             if dist[edge[0]] + graph[edge[0]][edge[1]] < dist[edge[1]]:
                 dist[edge[1]] = dist[edge[0]] + graph[edge[0]][edge[1]]
-                change = True 
-        if change == False: 
-            break 
+                #change = True 
+        #if change == False: 
+        #    break 
         '''
         for r in range(v):
             for c in range(v-1):
@@ -136,14 +136,14 @@ def Dijkstra_all( graph , V):
 def Johnson( graph , E , V):
     v = len(graph)
     e = len(E)
-    node_p = v * [ 0 ]
+    node_p = v * [ 0 ]                     # Add nodes
     for i in range(v):
         E = E + [ ( v , i ) ]
-    graph = np.vstack([ graph , node_p] )
+    graph = np.vstack([ graph , node_p] )  # Add the edges
     #print "add node_p \n" , graph
-    h = Bellman_Ford ( graph , E , v ) 
+    h = Bellman_Ford ( graph , E , v )     # Bellman-Ford + Detect Negative Cycle
     #print " h = \n" , h
-    ud_graph = np.delete( graph , v , 0 )
+    ud_graph = np.delete( graph , v , 0 )  # Update -> Graph
     #print " delete \n" , graph
     #print "before update \n" , ud_graph
     E = E[:e]

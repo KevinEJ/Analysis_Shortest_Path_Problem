@@ -40,7 +40,7 @@ for r in range(n_v):
 J = np.zeros((41,11))
 F = np.zeros((41,11))
     
-for v in range(1,40):
+for v in range(1,1):
     for e in range(1 , 10):
         print 'v = ', v , ' , e = ' , e  
         print 'v = ', v*5 , ' , e = ' , (25*v*v-v)/10*e  
