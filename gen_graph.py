@@ -23,6 +23,12 @@ def gen_adjacent_matrix( n_vertice , n_edges , min_w , max_w ):
                 graph[r][c] = np.NaN
     #print graph
     #gen_edgeList
+    '''
+    graph = np.array ( [[ np.inf , -3.   ,  10.    ,7.],
+                        [  np.inf , np.inf,  np.inf , np.inf],
+                        [  4.     , np.inf,  np.inf , np.inf],
+                        [  np.inf ,  8.   ,  np.inf , np.inf]] ) 
+    '''
     E = [] 
     for r in range(n_vertice):
         for c in range(n_vertice):

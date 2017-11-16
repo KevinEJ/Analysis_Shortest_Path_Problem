@@ -13,11 +13,12 @@ assert(len(sys.argv)==3)
 n_v = int(sys.argv[1])
 n_e = int(sys.argv[2])
 
-graph , E , V = gen_adjacent_matrix( n_v , n_e , 0 , 10)
+graph , E , V = gen_adjacent_matrix( n_v , n_e , -5 , 10)
 #graph = np.array([[ np.NaN,   9.   ,   9.   ,   7.   ],
 #                  [  4.   ,  np.NaN,   -9.   ,  np.NaN],
 #                  [ -1.   ,  np.NaN,  np.NaN,   0.   ],
 #                  [ np.NaN,  np.NaN,  np.NaN,  np.NaN]])
+
 
 #print graph , "\n"
 start = time.time()
@@ -31,12 +32,28 @@ dist_2 = Floyd_Warshall(graph)
 end = time.time()
 print " Floyd_Warshall -> runtime = " , end - start
 
-for r in range(n_v):
-    for c in range(n_v):
-        if r!=c and dist_1[r][c] != dist_2[r][c]:
-            print "r = " , r , " c = " , c , "dist_1 = " , dist_1[r][c] , "dist_2" , dist_2[r][c]
-            print "Error!!!!!!!!!!!!!!!"
+try:
+    if (bool(dist_1) == False):
+        print "NegCycle in Johnson"
+except:
+    pass
+try:
+    if( bool(dist_2) == False): 
+        print "NegCycle in Floyd_warshall"
+except:
+    pass
 
+try:
+    for r in range(n_v):
+        for c in range(n_v):
+            if r!=c and dist_1[r][c] != dist_2[r][c]:
+                print "r = " , r , " c = " , c , "dist_1 = " , dist_1[r][c] , "dist_2" , dist_2[r][c]
+                print "Error!!!!!!!!!!!!!!!"
+except:
+    pass
+#print graph
+#print dist_1
+#print dist_2
 J = np.zeros((41,11))
 F = np.zeros((41,11))
     

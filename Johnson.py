@@ -48,7 +48,7 @@ def Bellman_Ford( graph , E , s ):
     for edge in E:
         if dist[edge[0]] + graph[edge[0]][edge[1]] < dist[edge[1]]:
             print "Graph contains a negative-weight cycle"
-            
+            return False    
     '''
     for r in range(v):
         for c in range(v-1):
@@ -60,16 +60,11 @@ def Bellman_Ford( graph , E , s ):
     return dist
 
 def update_graph( graph , E , h ):
-    #v = len(graph)
-    for edge in E:
-        graph[edge[0]][edge[1]] = graph[edge[0]][edge[1]] + h[edge[0]] - h[edge[1]]
-    '''
+    v = len(graph)
     for r in range(v):
         for c in range(v):
-            if graph[r][c] <= np.inf:
-                graph[r][c] = graph[r][c] + h[r] - h[c]
-    '''
-    '''
+            graph[r][c] = graph[r][c] + h[r] - h[c]
+ 
 def extract_min( Q , dist ):
     rest = dist[Q[0]]
     idx = Q[0] 
@@ -79,7 +74,7 @@ def extract_min( Q , dist ):
             idx = i 
     Q.remove(idx)
     return idx
-'''
+
 def Dijkstra( graph , s , V ):
     #init
     v = len(graph)
@@ -88,7 +83,7 @@ def Dijkstra( graph , s , V ):
     dist[:] = np.inf
     dist[s] = 0
     #prev[:] = np.NaN
-    #S = []
+    #S= []
     Entry_list = [ ] 
     #Q_list = range(v)
     Q_FHeap = fhp.Fibonacci_heap() 
@@ -142,6 +137,11 @@ def Johnson( graph , E , V):
     graph = np.vstack([ graph , node_p] )  # Add the edges
     #print "add node_p \n" , graph
     h = Bellman_Ford ( graph , E , v )     # Bellman-Ford + Detect Negative Cycle
+    try:
+        if (bool(h) == False):
+            return False
+    except:
+        pass
     #print " h = \n" , h
     ud_graph = np.delete( graph , v , 0 )  # Update -> Graph
     #print " delete \n" , graph

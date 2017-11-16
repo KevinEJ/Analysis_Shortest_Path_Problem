@@ -36,6 +36,7 @@ def Floyd_Warshall( graph ):
     for i in range(v):
         if dist[i][i] < 0:
             print "Graph contains a negative-weight cycle"
+            return False
     return dist 
 
 
