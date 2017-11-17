@@ -78,6 +78,7 @@ def DFS( graph , v , mark ):
     finish = finish + 1 
 
 def get_num_CC(graph):
+    global finish
     n_vertice = len(graph)
     R_graph = Reverse_G ( graph )
     mark = np.zeros(n_vertice)

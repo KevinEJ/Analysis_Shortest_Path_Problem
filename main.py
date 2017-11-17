@@ -18,6 +18,7 @@ E = gen_E(graph)
 V = gen_V(graph)
 DL_std = np.std(getDegreeList(V))
 num_SCC = get_num_CC(graph)
+print "STD = " ,  DL_std , " num_SCC =" , num_SCC
 
 #print graph , "\n"
 start = time.time()
@@ -52,6 +53,41 @@ except:
     pass
 
 
+Output = open('my_new_output_std_SCC.csv' , 'w')
+for i in range(3600):
+    graph = gen_adjacent_matrix( n_v , n_e , 0 , 10)
+    E = gen_E(graph)
+    V = gen_V(graph)
+    DL_std = np.std(getDegreeList(V))
+    num_SCC = get_num_CC(graph)
+    print "STD = " ,  DL_std , " num_SCC =" , num_SCC
+    # John
+    start = time.time()
+    Johnson( graph , E , V)  , "\n"
+    end = time.time()
+    time_John = end - start 
+    print " Johnson -> runtime = " , end - start
+    
+    #Floyd
+    start = time.time()
+    Floyd_Warshall(graph) , "\n"
+    end = time.time()
+    time_Floyd = end - start 
+    print " Floyd_Warshall -> runtime = " , end - start
+ 
+    Output.write(str(n_v))
+    Output.write(',')
+    Output.write(str(n_e))
+    Output.write(',')
+    Output.write(str(DL_std))
+    Output.write(',')
+    Output.write(str(num_SCC))
+    Output.write(',')
+    Output.write(str(time_John))
+    Output.write(',')
+    Output.write(str(time_Floyd))
+    Output.write('\n')
+Output.close()
 '''
 #print graph
 #print dist_1
