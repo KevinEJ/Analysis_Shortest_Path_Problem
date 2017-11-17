@@ -50,12 +50,15 @@ try:
                 print "Error!!!!!!!!!!!!!!!"
 except:
     pass
+
+
+'''
 #print graph
 #print dist_1
 #print dist_2
 J = np.zeros((41,11))
 F = np.zeros((41,11))
-    
+
 for v in range(1,1):
     for e in range(1 , 10):
         print 'v = ', v , ' , e = ' , e  
@@ -109,4 +112,6 @@ for v in F:
         Output.write(',')
     Output.write('\n')
 #print F
-    
+'''
+
+
