@@ -13,12 +13,11 @@ assert(len(sys.argv)==3)
 n_v = int(sys.argv[1])
 n_e = int(sys.argv[2])
 
-graph , E , V = gen_adjacent_matrix( n_v , n_e , -5 , 10)
-#graph = np.array([[ np.NaN,   9.   ,   9.   ,   7.   ],
-#                  [  4.   ,  np.NaN,   -9.   ,  np.NaN],
-#                  [ -1.   ,  np.NaN,  np.NaN,   0.   ],
-#                  [ np.NaN,  np.NaN,  np.NaN,  np.NaN]])
-
+graph = gen_adjacent_matrix( n_v , n_e , 0 , 10)
+E = gen_E(graph)
+V = gen_V(graph)
+DL_std = np.std(getDegreeList(V))
+num_SCC = get_num_CC(graph)
 
 #print graph , "\n"
 start = time.time()
