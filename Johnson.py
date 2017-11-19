@@ -1,6 +1,7 @@
 #Johnson's algorithm
 
 from gen_graph import *
+import time
 import fibonacci_heap_mod as fhp
 
 #test_graph = gen_adjacent_matrix( 4 , 7 , -1 , 10 )
@@ -23,18 +24,18 @@ def Bellman_Ford( graph , E , s ):
     dist[s] = 0 
     #for i in preV:
     #    i = np.NaN
-    #change = True ; 
+    change = True ; 
     # v-1 iterations
     for i in range(v):
         # for each edge
-        #change = False
+        change = False
         #print dist
         for edge in E:
             if dist[edge[0]] + graph[edge[0]][edge[1]] < dist[edge[1]]:
                 dist[edge[1]] = dist[edge[0]] + graph[edge[0]][edge[1]]
-                #change = True 
-        #if change == False: 
-        #    break 
+                change = True 
+        if change == False: 
+            break 
         '''
         for r in range(v):
             for c in range(v-1):
@@ -136,7 +137,10 @@ def Johnson( graph , E , V):
         E = E + [ ( v , i ) ]
     graph = np.vstack([ graph , node_p] )  # Add the edges
     #print "add node_p \n" , graph
+    start = time.time()
     h = Bellman_Ford ( graph , E , v )     # Bellman-Ford + Detect Negative Cycle
+    end = time.time()
+    print " Bellman_Ford -> runtime = " , end - start
     try:
         if (bool(h) == False):
             return False
@@ -149,7 +153,10 @@ def Johnson( graph , E , V):
     E = E[:e]
     update_graph ( ud_graph , E , h )
     #print " update \n" , ud_graph
+    start = time.time()
     dist = Dijkstra_all( ud_graph , V)
+    end = time.time()
+    print " Dijkstra_all -> runtime = " , end - start
     #print " dist \n" , dist
     #print " h =  \n" , h 
     update_graph ( dist , E , -h )

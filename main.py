@@ -8,17 +8,20 @@ import sys
 import pdb
 import numpy as np
 #if len(sys.argv) != 2:
-assert(len(sys.argv)==3)
+assert(len(sys.argv)==5)
 
 n_v = int(sys.argv[1])
 n_e = int(sys.argv[2])
+min_w = int(sys.argv[3])
+max_w = int(sys.argv[4])
 
-graph = gen_adjacent_matrix( n_v , n_e , 0 , 10)
+graph = gen_adjacent_matrix( n_v , n_e , min_w , max_w)
 E = gen_E(graph)
 V = gen_V(graph)
 DL_std = np.std(getDegreeList(V))
 num_SCC = get_num_CC(graph)
-print "STD = " ,  DL_std , " num_SCC =" , num_SCC
+num_NegEdge = Count_Negative_Edges(graph)
+print "STD = " ,  DL_std , " num_SCC =" , num_SCC, "Num_negtive_Edges = " , num_NegEdge
 
 #print graph , "\n"
 start = time.time()
@@ -31,6 +34,10 @@ start = time.time()
 dist_2 = Floyd_Warshall(graph)
 end = time.time()
 print " Floyd_Warshall -> runtime = " , end - start
+
+#print graph
+#print dist_1 
+#print dist_2 
 
 try:
     if (bool(dist_1) == False):
@@ -53,14 +60,17 @@ except:
     pass
 
 
-Output = open('my_new_output_std_SCC.csv' , 'w')
+#Output = open('my_new_output_earlystop_1119.csv' , 'w')
+'''
 for i in range(3600):
-    graph = gen_adjacent_matrix( n_v , n_e , 0 , 10)
+    #graph = gen_adjacent_matrix( n_v , n_e , 0 , 10)
+    graph = gen_adjacent_matrix( n_v , n_e , min_w , max_w)
     E = gen_E(graph)
     V = gen_V(graph)
     DL_std = np.std(getDegreeList(V))
     num_SCC = get_num_CC(graph)
-    print "STD = " ,  DL_std , " num_SCC =" , num_SCC
+    num_NegEdge = Count_Negative_Edges(graph)
+    print "STD = " ,  DL_std , " num_SCC =" , num_SCC, "Num_negtive_Edges = " , num_NegEdge
     # John
     start = time.time()
     Johnson( graph , E , V)  , "\n"
@@ -83,19 +93,22 @@ for i in range(3600):
     Output.write(',')
     Output.write(str(num_SCC))
     Output.write(',')
+    Output.write(str(num_NegEdge))
+    Output.write(',')
     Output.write(str(time_John))
     Output.write(',')
     Output.write(str(time_Floyd))
     Output.write('\n')
 Output.close()
 '''
+
 #print graph
 #print dist_1
 #print dist_2
 J = np.zeros((41,11))
 F = np.zeros((41,11))
 
-for v in range(1,1):
+for v in range(1,10):
     for e in range(1 , 10):
         print 'v = ', v , ' , e = ' , e  
         print 'v = ', v*5 , ' , e = ' , (25*v*v-v)/10*e  
@@ -104,7 +117,14 @@ for v in range(1,1):
         F[v][e] = 0
         while( J[v][e] < 1 or F[v][e] < 1):
         #while( count == 0 ):
-            graph , E , V= gen_adjacent_matrix( v*5 , (25*v*v-v)/10*e , 0 , 10)
+            graph = gen_adjacent_matrix( v*5 , (25*v*v-v)/10*e , -5 , 5)
+            E = gen_E(graph)
+            V = gen_V(graph)
+            DL_std = np.std(getDegreeList(V))
+            num_SCC = get_num_CC(graph)
+            num_NegEdge = Count_Negative_Edges(graph)
+            print "STD = " ,  DL_std , " num_SCC =" , num_SCC, "Num_negtive_Edges = " , num_NegEdge
+            
             # John
             start = time.time()
             Johnson( graph , E , V)  , "\n"
@@ -148,6 +168,5 @@ for v in F:
         Output.write(',')
     Output.write('\n')
 #print F
-'''
 
 

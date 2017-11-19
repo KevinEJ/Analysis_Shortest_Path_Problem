@@ -1,7 +1,16 @@
 # Function to generate a graph 
 import numpy as np
 import random
+import Bellman_ford
 
+def Count_Negative_Edges(graph):
+    n_vertice = len(graph)
+    Negative_Edge_count = 0 
+    for r in range(n_vertice):
+        for c in range(n_vertice):
+            if graph[r][c] < 0 :
+                Negative_Edge_count = Negative_Edge_count + 1
+    return Negative_Edge_count 
 
 def gen_E( graph):
     n_vertice = len(graph)
@@ -39,6 +48,8 @@ def gen_adjacent_matrix( n_vertice , n_edges , min_w , max_w ):
         for c in range(n_vertice):
             if graph[r][c] == 1 :
                 graph[r][c] = random.randint( min_w , max_w )
+                while ( Bellman_ford.Bellman_Ford( graph , gen_E(graph) , 0 ) == False ):
+                    graph[r][c] = random.randint( min_w , max_w )
             else:
                 graph[r][c] = np.NaN
     #print graph
